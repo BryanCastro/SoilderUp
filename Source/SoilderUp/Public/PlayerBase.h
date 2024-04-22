@@ -26,12 +26,18 @@ class SOILDERUP_API APlayerBase : public ACharacterBase
 public:
 	APlayerBase();
 
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	FTimerHandle SpawnWeaponTimerHandle;
 
 	void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 	void Move(const FInputActionValue& Value);
-
 	void SpawnWeapon();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Miscellaneous")
 	USceneComponent* WeaponSpawnLocation;
@@ -41,13 +47,13 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* Camera;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputMappingContext* IMC_Player;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input")
 	UInputAction* IA_Move;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Weapon")
-	float WeaponSpawnTime=0.25f;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
+	float WeaponSpawnTime = 0.25f;
 
 	UWorld* WorldRef;
 

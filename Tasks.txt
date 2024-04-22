@@ -1,0 +1,48 @@
+TODO:
+->Sound When Enemy/Player Hit
+->Add GamePad Controllers
+->Test on Steamdeck
+
+->Enemies Drop Gems
+->Gems Keep Moving Forward
+->Gems Move Towards Player Based on Radius
+->Refine Enemy Spanwer (Enemy Count Based)
+->Enemies Go Towards Player
+->Player Leveling System
+->Player Idle Animation
+
+->More Weapons
+->Player Weapon Upgrades (On Levelup)
+->Level Pickups
+->More Enemies
+->Health bars on top of enemies (UI)
+->Player Level Display (UI)
+->Player Health Display (UI)
+->World Map
+->Game Reset
+->Game Completed
+->(Unreal Niagara Tutorials)
+->Death Poof Animation (Enemy/Player)
+->Level Design Debug 2 [2nd Pass]
+->Dynamic Level Elements
+    ->Exploding Barrels
+    ->Cars
+    etc....
+
+IN PROGRESS:
+
+COMPLETED: 
+->Character Base Class
+->Player Class
+->Enemy Class
+->Simple Sprite Map
+->Enemy Death
+->Weapon Base Class
+->Enemy Death
+->Weapon Use Spawner on Player
+->Enemy Spawner
+
+->Player Health and Death
+->Level Design Debug 2 [Initial]
+->PushBack When Hit
+->Sprite Flash on Hit

@@ -26,16 +26,16 @@ public:
 	void SetupSpawnLocations();
 	void SpawnEnemy();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties")
 	int32 SpawnNum=6;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties")
 	float LocationXStart = -300.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties")
 	float LocationXOffset = 100.0f;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Properties")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Properties")
 	float EnemySpawnTime=0.1f;
 
 	UPROPERTY(EditAnywhere, Category = "Enemies")

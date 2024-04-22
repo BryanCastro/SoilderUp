@@ -6,6 +6,7 @@
 #include "PaperFlipbook.h"
 #include "GameUtils.h"
 
+
 ACharacterBase::ACharacterBase()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -25,4 +26,58 @@ ACharacterBase::ACharacterBase()
 	}
 
 	GetSprite()->CastShadow = true;
+
+
 } 
+
+void ACharacterBase::BeginPlay() {
+	Super::BeginPlay();
+
+	if (FlashEffectFloatCurve) {
+
+		//GameUtils::LogMessage("Found Curve");
+		FOnTimelineFloat FlashEffectProgressFunction;
+		FlashEffectProgressFunction.BindUFunction(this, FName("HandleFlashEffectProgress"));
+
+		FlashEffectTimeline.AddInterpFloat(FlashEffectFloatCurve, FlashEffectProgressFunction);
+		FlashEffectTimeline.SetLooping(false);
+		FlashEffectTimeline.SetPlayRate(FlashEffectPlayRate);
+	}
+
+	SpriteLitMaterialWithFlash = GetSprite()->CreateDynamicMaterialInstance(0);
+}
+
+void ACharacterBase::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
+	if (FlashEffectTimeline.IsPlaying())
+	{
+		FlashEffectTimeline.TickTimeline(DeltaTime);
+	}
+}
+
+void ACharacterBase::ToogleSpriteFlicker()
+{
+	UPaperFlipbookComponent* SpriteRef = GetSprite();
+	bool NotVisibility = !SpriteRef->IsVisible();
+	SpriteRef->SetVisibility(NotVisibility);
+
+}
+
+void ACharacterBase::TriggerSpriteFlashEffect() {
+
+	SpriteLitMaterialWithFlash->SetScalarParameterValue("FlashMultiplier", FlashMultiplier);
+	SpriteLitMaterialWithFlash->SetVectorParameterValue("FlashColor", FlashColor);
+
+	FlashEffectTimeline.PlayFromStart();
+}
+
+void ACharacterBase::StopSpriteFlicker() {
+	GetWorld()->GetTimerManager().ClearTimer(ToogleSpriteFlickerTimerHandle);
+}
+
+UFUNCTION()
+void ACharacterBase::HandleFlashEffectProgress(float Value) {
+	
+	//GameUtils::LogMessage(FString::Printf(TEXT("Flash Value: %f"), Value));
+	SpriteLitMaterialWithFlash->SetScalarParameterValue("FlashMultiplier", Value);
+}

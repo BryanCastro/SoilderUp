@@ -12,6 +12,7 @@
 #include "TimerManager.h"
 #include "Engine/World.h"
 #include "WeaponBase.h"
+#include "EnemyBase.h"
 #include "Components/CapsuleComponent.h"
 
 
@@ -36,7 +37,11 @@ APlayerBase::APlayerBase() : ACharacterBase()
 
 	SpringArm->SetWorldRotation(InitialRotation);
 
-	GetCapsuleComponent()->SetCollisionProfileName(FName("Player"));
+	UCapsuleComponent* CapsuleComponentRef = GetCapsuleComponent();
+	CapsuleComponentRef->SetCollisionProfileName(FName("Player"));
+	CapsuleComponentRef->OnComponentBeginOverlap.AddDynamic(this, &APlayerBase::OnBeginOverlap);
+
+
 
 	// Example Blueprint path - replace with your actual Blueprint path
 	static ConstructorHelpers::FClassFinder<AWeaponBase> WeaponBP(TEXT("/Game/Blueprints/BP_WeaponBase.BP_WeaponBase_C"));
@@ -46,6 +51,10 @@ APlayerBase::APlayerBase() : ACharacterBase()
 	}
 
 	WorldRef = GetWorld();
+}
+
+void APlayerBase::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
 }
 
 void APlayerBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -86,8 +95,6 @@ void APlayerBase::BeginPlay() {
 
 	Super::BeginPlay();
 	GetWorldTimerManager().SetTimer(SpawnWeaponTimerHandle, this, &APlayerBase::SpawnWeapon, WeaponSpawnTime, true);
-
-
 }
 
 void APlayerBase::SpawnWeapon() {
@@ -105,3 +112,26 @@ void APlayerBase::SpawnWeapon() {
 		GameUtils::LogMessage("Failed to Spawn Weapon");
 	}
 }
+
+void APlayerBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+
+	AEnemyBase* Enemy = Cast<AEnemyBase>(OtherActor);
+	if (Enemy) {
+		Health = Health - Enemy->Damage;
+
+		//GameUtils::LogMessage(FString::Printf(TEXT("Enemy collided with: %s"), *Enemy->GetName()));
+		//GameUtils::LogMessage(FString::Printf(TEXT("Health: %f"), Health));
+
+
+		if (Health <= 0) {
+			//GameUtils::LogMessage("Enemy Destroyed", FColor::Green);
+			Destroy();
+		}
+		else {
+			GetWorld()->GetTimerManager().SetTimer(ToogleSpriteFlickerTimerHandle, this, &ACharacterBase::ToogleSpriteFlicker, SpriteFlickerFreq, true);
+			GetWorld()->GetTimerManager().SetTimer(StopSpriteFlickerTimerHandle, this, &ACharacterBase::StopSpriteFlicker, StopFlickerTime, false);
+		}
+	}
+
+}
+
