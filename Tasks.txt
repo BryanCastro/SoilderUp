@@ -1,23 +1,26 @@
 TODO:
-->Sound When Enemy/Player Hit
+
+->Enemies Go Towards Player
+-Fixed Camera instead of following player
+
+
 ->Add GamePad Controllers
 ->Test on Steamdeck
 
-->Enemies Drop Gems
-->Gems Keep Moving Forward
-->Gems Move Towards Player Based on Radius
 ->Refine Enemy Spanwer (Enemy Count Based)
-->Enemies Go Towards Player
 ->Player Leveling System
 ->Player Idle Animation
 
 ->More Weapons
 ->Player Weapon Upgrades (On Levelup)
-->Level Pickups
-->More Enemies
+
 ->Health bars on top of enemies (UI)
 ->Player Level Display (UI)
 ->Player Health Display (UI)
+
+->Level Pickups
+->More Enemies
+
 ->World Map
 ->Game Reset
 ->Game Completed
@@ -30,6 +33,9 @@ TODO:
     etc....
 
 IN PROGRESS:
+->Enemies Drop Gems On Death
+->Gems Keep Moving Forward
+->Gems Move Towards Player Based on Radius
 
 COMPLETED: 
 ->Character Base Class
@@ -42,7 +48,6 @@ COMPLETED:
 ->Weapon Use Spawner on Player
 ->Enemy Spawner
 
-->Player Health and Death
-->Level Design Debug 2 [Initial]
-->PushBack When Hit
-->Sprite Flash on Hit
+->Sound When Weapon Shot
+->Sound When Enemy Hit
+->Sound When Player Hit

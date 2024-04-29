@@ -49,8 +49,9 @@ void AEnemyBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		Health = Health-Weapon->Damage;
 		
 		if (Health <= 0) {
+			
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			//GameUtils::LogMessage("Enemy Destroyed", FColor::Green);
-			OtherActor->Destroy();
 			Destroy();
 		}
 		else {
@@ -58,7 +59,8 @@ void AEnemyBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 			TriggerSpriteFlashEffect();
 			//GetWorld()->GetTimerManager().SetTimer(ToogleSpriteFlickerTimerHandle, this, &ACharacterBase::ToogleSpriteFlicker, SpriteFlickerFreq, true);
 			//GetWorld()->GetTimerManager().SetTimer(StopSpriteFlickerTimerHandle, this, &ACharacterBase::StopSpriteFlicker, StopFlickerTime, false);		
-			}
+		}
+		Weapon->HandleDeath();
 	}
 
 }

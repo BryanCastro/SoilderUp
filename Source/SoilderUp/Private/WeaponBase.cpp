@@ -5,6 +5,10 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "TimerManager.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameUtils.h"
 
 // Sets default values
 AWeaponBase::AWeaponBase()
@@ -20,6 +24,8 @@ AWeaponBase::AWeaponBase()
 	MeshComponent->SetupAttachment(SphereComponent);
 	ProjectileMovementComp->UpdatedComponent = RootComponent;
 
+	MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	ProjectileMovementComp->ProjectileGravityScale = 0.0f;
 	ProjectileMovementComp->MaxSpeed = MovementSpeed;
 	ProjectileMovementComp->Velocity = FVector(0.0f, -MovementSpeed, 0.0f);
@@ -34,8 +40,14 @@ void AWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(WeaponDeathTimerHandle, this, &AWeaponBase::OnDeath, LifeTime, false);
+	GetWorldTimerManager().SetTimer(WeaponDeathTimerHandle, this, &AWeaponBase::DestroyWeapon, LifeTime, false);
 	
+	if (WeaponUsedSound) {
+		UGameplayStatics::PlaySoundAtLocation(this, WeaponUsedSound, GetActorLocation());
+	}
+	else
+		GameUtils::LogMessage("WeaponBase.cpp: Failed to Load WeaponUsed Sound");
+
 }
 
 // Called every frame
@@ -45,7 +57,19 @@ void AWeaponBase::Tick(float DeltaTime)
 
 }
 
-void AWeaponBase::OnDeath() {
+void AWeaponBase::HandleDeath() {
+	if (WeaponHitSound) {
+		UGameplayStatics::PlaySoundAtLocation(this, WeaponHitSound, GetActorLocation());
+		Destroy();
+	}
+	else {
+		GameUtils::LogMessage("WeaponBase.cpp: Failed to Play WeaponDeathSound");
+	}
+
+}
+
+void AWeaponBase::DestroyWeapon() {
+	GameUtils::LogMessage("Audio Finished!");
 	Destroy();
 }
 

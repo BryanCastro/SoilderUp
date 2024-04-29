@@ -14,6 +14,8 @@
 #include "WeaponBase.h"
 #include "EnemyBase.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 
 
 APlayerBase::APlayerBase() : ACharacterBase()
@@ -117,6 +119,11 @@ void APlayerBase::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 
 	AEnemyBase* Enemy = Cast<AEnemyBase>(OtherActor);
 	if (Enemy) {
+		if (PlayerHitSound)
+			UGameplayStatics::PlaySoundAtLocation(this, PlayerHitSound, GetActorLocation());
+		else
+			GameUtils::LogMessage("PlayerBase.cpp: Failed to Play PlayerHitSound");
+
 		Health = Health - Enemy->Damage;
 
 		//GameUtils::LogMessage(FString::Printf(TEXT("Enemy collided with: %s"), *Enemy->GetName()));

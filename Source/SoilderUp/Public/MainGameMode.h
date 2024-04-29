@@ -20,7 +20,6 @@ class SOILDERUP_API AMainGameMode : public AGameModeBase
 public:
 	AMainGameMode();
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sounds and Music");
 	UAudioComponent* AudioComponent;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Sounds and Music");
 	USoundBase* Music;

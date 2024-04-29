@@ -13,6 +13,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class AWeaponBase;
+class USoundWave;
 struct FInputActionValue;
 struct FTimerHandle;
 
@@ -59,6 +60,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Weapons")
 	TSubclassOf<AWeaponBase> WeaponBlueprint;
+
+	UPROPERTY(EditDefaultsOnly, Category="Sounds")
+	USoundWave* PlayerHitSound;
 
 private:
 	APlayerController* PlayerControllerRef;
